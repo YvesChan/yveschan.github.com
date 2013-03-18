@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Hello YC]]></title>
+  <link href="http://YvesChan.github.com/atom.xml" rel="self"/>
+  <link href="http://YvesChan.github.com/"/>
+  <updated>2013-03-18T23:44:11+08:00</updated>
+  <id>http://YvesChan.github.com/</id>
+  <author>
+    <name><![CDATA[YvesChan]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+</feed>
