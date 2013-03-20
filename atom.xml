@@ -4,7 +4,7 @@
   <title><![CDATA[Hello YC]]></title>
   <link href="http://YvesChan.github.com/atom.xml" rel="self"/>
   <link href="http://YvesChan.github.com/"/>
-  <updated>2013-03-18T23:44:11+08:00</updated>
+  <updated>2013-03-21T00:58:12+08:00</updated>
   <id>http://YvesChan.github.com/</id>
   <author>
     <name><![CDATA[YvesChan]]></name>
@@ -12,5 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[First Blood]]></title>
+    <link href="http://YvesChan.github.com/blog/first-blood/"/>
+    <updated>2013-03-19T21:54:00+08:00</updated>
+    <id>http://YvesChan.github.com/blog/first-blood</id>
+    <content type="html"><![CDATA[<blockquote><p>First Blood</p>
+
+<p>出自ACM/ICPC
+形容某道题第一个AC的team称为拿到了该题的 <em>First Blood</em></p></blockquote>
+
+<p>一直想测试一下Octopress的使用体验，花了一个晚上折腾Ruby的安装环境和各种各样的奇怪问题，总算是弄好了。</p>
+
+<p>说起来最近折腾了不少东西，比如Sublime Text 2的各种plugins，比如zsh，比如tmux，etc。真心觉得生命在于折腾啊。越来越体会到先进的工具对生产力的影响了。神器如ST2，如果使用得当，绝对是可敌IDE，但是要记得那么多快捷键也不是那么容易啊。vim的话，我也常用，但是只能算入门。大概就是八二原理吧，百分之八十的时间只用到百分之二十的功能。</p>
+
+<p>原来的博客放在Blogspot上面，写po的时候非常不方便，比如不支持markdown，比如代码高亮要添加各种插件，比如被墙（这个才是最重要的）。另外数据导出和备份也是个问题。之前想在VPS上鼓捣wordpress，但是感觉吧，还是不够纯粹，加上WP默认主题太多槽点。Orz 虽然说WP也是有很多可折腾的地方，但是吧我发现如果不通过点什么东西来巩固我的git技能和markdown语法，估计要掉的差不多了 = =</p>
+
+<p>网上关于octopress的教程一陀陀的，我就不重复了。然后比较蛋疼的ST2的中文输入问题一直没有解决，然后vim输入中文感觉灰常怪，所以就gedit先凑合着。突然想起一个比较蛋疼的问题：如果在别的机器上要写blog，那岂不是也要有Ruby的环境？看来要尽快考虑将静态网页生成的工作交由服务器负责了。果然什么都是有利有弊啊，更多优缺点有待发现ing&#8230;.</p>
+
+<p>其实呢，折腾虽说是由个人喜好决定，但是也不要太过了，码农还是以敲代码为主嘛，只停留在一些应用层面上的东西没什么太大的意思，这也是我不愿意折腾UI的原因&#8230;</p>
+]]></content>
+  </entry>
   
 </feed>
