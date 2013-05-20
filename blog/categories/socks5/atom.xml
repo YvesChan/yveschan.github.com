@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: socks5 | Hello YC]]></title>
+  <link href="http://YvesChan.github.com/blog/categories/socks5/atom.xml" rel="self"/>
+  <link href="http://YvesChan.github.com/"/>
+  <updated>2013-05-20T19:46:48+08:00</updated>
+  <id>http://YvesChan.github.com/</id>
+  <author>
+    <name><![CDATA[YvesChan]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Shadowsocks 源码解释]]></title>
+    <link href="http://YvesChan.github.com/blog/shadowsocks-analysis/"/>
+    <updated>2013-05-18T09:10:00+08:00</updated>
+    <id>http://YvesChan.github.com/blog/shadowsocks-analysis</id>
+    <content type="html"><![CDATA[<blockquote><p>对于科学上网这种事，我向来一丝不苟。</p>
+
+<p>但本po的主题并不是如何科学上网，而是深入了解proxy背后的原理。</p></blockquote>
+
+<h2>Preface</h2>
+
+<p>去年shadowsocks在V2EX刚<a href="http://www.v2ex.com/t/32777">发布</a>的时候，我就已经开始留意这个项目。当时还在用Goagent，但有时候速度确实不咋的，而且重新配置的话会比较麻烦。9月份入手VPS之后开始折腾PPTP VPN，效果相当不稳定。不久后OpenVPN也开始受到干扰了。看来必须寻找比较小众的方式，避免躺枪。因此，初试shadowsocks（python版），速度或者稳定性都相当好，一直用到现在，未出现过什么问题。配置也很简单，唯一的门槛就是需要国外的Linux 主机（VPS）。现在shadowsocks项目已经发展到多语言跨平台了，社区也比较活跃，主要原因是项目架构简单，代码精简易于维护。</p>
+
+<p>一周前开始学习python，主要是想用python写一个爬虫。大概用了4天的课余时间把 《Dive Into Python3》过了一遍，了解基本语法。结合文档看大牛的源码是很好的学习方式，所谓learn by doing嘛。不得不说，shadowsocks的源码真心简洁，再看一下SOCK5协议的报文格式，并没有花很多时间。貌似说了不少废话，现在入正题= =！</p>
+
+<h2>Socks5</h2>
+
+<p>首先介绍一下socks5协议：
+SOCKS协议位于传输层(TCP/UDP等)与应用层之间，其工作流程为</p>
+
+<ol>
+<li>client向proxy发出请求信息，用以协商传输方式</li>
+<li>proxy作出应答</li>
+<li>client接到应答后向proxy发送目的主机（destination server)的ip和port</li>
+<li>proxy评估该目的主机地址，返回自身IP和port，此时C/P连接建立。</li>
+<li>proxy与dst server连接</li>
+<li>proxy将client发出的信息传到server，将server返回的信息转发到client。代理完成</li>
+</ol>
+
+
+<h3>client连接proxy的第一个报文信息，进行认证机制协商</h3>
+
+<table border="1">
+    <tr>
+        <td>version</td>
+        <td>nmethod</td>
+        <td>methods</td>
+    </tr>
+    <tr>
+        <td>1 Bytes</td>
+        <td>1 Bytes</td>
+        <td>1 to 255 Bytes</td>
+    </tr>
+</table>
+
+
+<p>一般是 hex: 05 01 00
+即：版本5，1种认证方式，NO AUTHENTICATION REQUIRED(无需认证 0x00)</p>
+
+<h3>proxy从METHODS字段中选中一个字节(一种认证机制)，并向Client发送响应报文:</h3>
+
+<table border="1">
+    <tr>
+        <td>version</td>
+        <td>methods</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>1</td>
+    </tr>
+</table>
+
+
+<p>一般是 hex: 05 00
+即：版本5，无需认证</p>
+
+<h3>认证机制相关的子协商完成后，Client提交转发请求:</h3>
+
+<table border="1">
+    <tr>
+        <td>VER</td>
+        <td>CMD</td>
+        <td>RSV</td>
+        <td>ATYP</td>
+        <td>DST.ADDR</td>
+        <td>DST.PORT</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>1</td>
+        <td>0x00</td>
+        <td>1</td>
+        <td>variable</td>
+        <td>2</td>
+    </tr>
+</table>
+
+
+<p>前3个一般是 hex: 05 01 00
+地址类型可以是
+* 0x01    IPv4地址
+* 0x03    FQDN(全称域名)
+* 0x04    IPv6地址</p>
+
+<p>对应不同的地址类型，地址信息格式也不同：
+* IPv4地址，这里是big-endian序的4字节数据
+* FQDN，比如"www.nsfocus.net"，这里将是:0F 77 77 77 2E 6E 73 66 6F 63 75 73 2E 6E 65 74。注意，第一字节是长度域
+* IPv6地址，这里是16字节数据。</p>
+
+<h3>proxy评估来自Client的转发请求并发送响应报文</h3>
+
+<table border="1">
+    <tr>
+        <td>VER</td>
+        <td>REP</td>
+        <td>RSV</td>
+        <td>ATYP</td>
+        <td>BND.ADDR</td>
+        <td>BND.PORT</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>1(response)</td>
+        <td>0x00</td>
+        <td>1</td>
+        <td>variable</td>
+        <td>2</td>
+    </tr>
+</table>
+
+
+<p>Proxy可以靠DST.ADDR、DST.PORT、SOCKSCLIENT.ADDR、SOCKSCLIENT.PORT进行评估，以决定建立到转发目的地的TCP连接还是拒绝转发。若允许则响应包的REP为0，非0则表示失败（拒绝转发或未能成功建立到转发目的地的TCP连接）。</p>
+
+<h2>shadowsocks source code</h2>
+
+<p>源代码方面，主要是由socks5转发模块和加密解密模块组成</p>
+
+<p>转发模块感觉比较简单，但是个人觉得有几点需要注意的地方，或者说我自己不太明白。（python菜，请谅解）</p>
+
+<p>``` python</p>
+
+<pre><code>with open('config.json', 'rb') as f:
+    config = json.load(f)
+SERVER = config['server']
+REMOTE_PORT = config['server_port']
+PORT = config['local_port']
+KEY = config['password']
+</code></pre>
+
+<p>```</p>
+
+<h3>client</h3>
+
+<ul>
+<li>从main开始，读取配置。这里为什么要用二进制的方式打开json文件呢？</li>
+<li>解释命令行参数 <code>optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:l:')</code>，这个跟Linux的getopt函数差不多，可以自己man一下。</li>
+<li>设置logging等级和信息，生成密文表（包括加密解密）。</li>
+<li>运行 ThreadingTCPServer 实例。从定义看， <code> class ThreadingTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer) </code> 子类化ThreadingTCPServer（多重继承继承ThreadingMixIn类和TCPServer类），即使用多线程处理TCP请求（Mix-in class to handle each request in a new thread），同时设置其类属性allow_reuse_address。这里绑定的地址是('',PORT)，意思是该套接字对于本机的任何地址都是可达的。BaseRequestHandler 则由 Socks5Server 子类实现。由于 SocketServer module 包含了很多socket programming的细节，所以代码看起来相当简洁。</li>
+<li>每当有请求到达，调用 handle 函数，主要是建立proxy到client和server的连接，然后调用 handle_tcp 函数来转发TCP数据包(包括client to server或相反方向)，对于server来说，proxy是完全透明的。当然，这里client和proxy之间的数据交互需要通过加密传输。</li>
+<li>对于handle_tcp而言，它需要同时处理两个socket（client &amp; server），这里使用了I/O multiplexing的方式，选择select作为实现。</li>
+</ul>
+
+
+<p>``` python</p>
+
+<pre><code>def handle_tcp(self, sock, remote):
+    try:
+        fdset = [sock, remote]
+        while True:
+            r, w, e = select.select(fdset, [], [])
+            if sock in r:
+                data = sock.recv(4096)
+                if len(data) &lt;= 0:
+                    break
+                result = send_all(remote, self.decrypt(data))
+                if result &lt; len(data):
+                    raise Exception('failed to send all data')
+            if remote in r:
+                data = remote.recv(4096)
+                if len(data) &lt;= 0:
+                    break
+                result = send_all(sock, self.encrypt(data))
+                if result &lt; len(data):
+                    raise Exception('failed to send all data')
+
+    finally:
+        sock.close()
+        remote.close()
+</code></pre>
+
+<p>```</p>
+
+<p>对于高性能并发服务器而言，这是一种非常重要的手段。当然还是其他实现方式，例如poll,epoll,kqueue等。这里由于文件描述符数量较小，所以分别也不大了。更详细的信息可以看 <a href="http://www.kegel.com/c10k.html">C10K problem</a></p>
+
+<h3>server</h3>
+
+<p>服务端代码与客户端差不多，主要是数据报文的解释和转发问题。主要是处理好在client端发送过来的自定数据格式，转发到目的地址server，再将返回的数据转发给client。</p>
+
+<p>更多的细节我都在<a href="https://github.com/YvesChan/shadowsocks">源码</a>上注释了，有兴趣可以看看。</p>
+
+<p>整个架构图大概这样：（就不要吐槽画的有多丑了= =）</p>
+
+<p><img src="http://ww3.sinaimg.cn/mw690/693e3eb0gw1e4uzpuiyh9j20ff0dvaat.jpg" alt="arch" /></p>
+
+<hr />
+
+<p>Reference:</p>
+
+<p><a href="http://blog.csdn.net/liufan1945/article/details/8053804">Socks5详解（RFC）</a></p>
+]]></content>
+  </entry>
+  
+</feed>
