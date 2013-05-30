@@ -4,7 +4,7 @@
   <title><![CDATA[Hello YC]]></title>
   <link href="http://YvesChan.github.com/atom.xml" rel="self"/>
   <link href="http://YvesChan.github.com/"/>
-  <updated>2013-05-20T19:46:48+08:00</updated>
+  <updated>2013-05-30T22:43:28+08:00</updated>
   <id>http://YvesChan.github.com/</id>
   <author>
     <name><![CDATA[YvesChan]]></name>
@@ -27,6 +27,9 @@
 <p>去年shadowsocks在V2EX刚<a href="http://www.v2ex.com/t/32777">发布</a>的时候，我就已经开始留意这个项目。当时还在用Goagent，但有时候速度确实不咋的，而且重新配置的话会比较麻烦。9月份入手VPS之后开始折腾PPTP VPN，效果相当不稳定。不久后OpenVPN也开始受到干扰了。看来必须寻找比较小众的方式，避免躺枪。因此，初试shadowsocks（python版），速度或者稳定性都相当好，一直用到现在，未出现过什么问题。配置也很简单，唯一的门槛就是需要国外的Linux 主机（VPS）。现在shadowsocks项目已经发展到多语言跨平台了，社区也比较活跃，主要原因是项目架构简单，代码精简易于维护。</p>
 
 <p>一周前开始学习python，主要是想用python写一个爬虫。大概用了4天的课余时间把 《Dive Into Python3》过了一遍，了解基本语法。结合文档看大牛的源码是很好的学习方式，所谓learn by doing嘛。不得不说，shadowsocks的源码真心简洁，再看一下SOCK5协议的报文格式，并没有花很多时间。貌似说了不少废话，现在入正题= =！</p>
+
+<!--more-->
+
 
 <h2>Socks5</h2>
 
@@ -257,6 +260,8 @@ SOCKS协议位于传输层(TCP/UDP等)与应用层之间，其工作流程为</p
 <p>网上关于octopress的教程一陀陀的，我就不重复了。然后比较蛋疼的ST2的中文输入问题一直没有解决，然后vim输入中文感觉灰常怪，所以就gedit先凑合着。突然想起一个比较蛋疼的问题：如果在别的机器上要写blog，那岂不是也要有Ruby的环境？看来要尽快考虑将静态网页生成的工作交由服务器负责了。果然什么都是有利有弊啊，更多优缺点有待发现ing&#8230;.</p>
 
 <p>其实呢，折腾虽说是由个人喜好决定，但是也不要太过了，码农还是以敲代码为主嘛，只停留在一些应用层面上的东西没什么太大的意思，这也是我不愿意折腾UI的原因&#8230;</p>
+
+<p>PS: 原先的Blog在<a href="http://shanks-chan.blogspot.com">Blogspot</a>由于贴代码太不方便了，而且被墙，应该不会再更新&#8230;.</p>
 ]]></content>
   </entry>
   

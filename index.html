@@ -1,115 +1,96 @@
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE HTML>
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>Hello YC</title>
-  <meta name="author" content="YvesChan">
+	<meta charset="utf-8">
+	<title>Hello YC</title>
+	<meta name="author" content="YvesChan">
 
-  
-  <meta name="description" content="对于科学上网这种事，我向来一丝不苟。 但本po的主题并不是如何科学上网，而是深入了解proxy背后的原理。 Preface 去年shadowsocks在V2EX刚发布的时候，我就已经开始留意这个项目。当时还在用Goagent，但有时候速度确实不咋的，而且重新配置的话会比较麻烦。 &hellip;">
-  
+	
+	<meta name="description" content="对于科学上网这种事，我向来一丝不苟。 但本po的主题并不是如何科学上网，而是深入了解proxy背后的原理。 Preface 去年shadowsocks在V2EX刚发布的时候，我就已经开始留意这个项目。当时还在用Goagent，但有时候速度确实不咋的，而且重新配置的话会比较麻烦。 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://YvesChan.github.com">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Hello YC" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-39495391-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
-
+	<link href="/atom.xml" rel="alternate" title="Hello YC" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
 </head>
 
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Hello YC</a></h1>
-  
-    <h2>专注拖延症二十年！</h2>
-  
-</hgroup>
+<body>
+	<header id="header" class="inner"><h1><a href="/">Hello YC</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+    <li><a href="/blog/archives">Archives</a></li>
+    <li><a href="/about.html">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+    <li><a href="/blog/archives">Archives</a></li>
+    <li><a href="/about.html">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:YvesChan.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		<a class="google" href="https://plus.google.com/102815467033208490607?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/shankscyp" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/YvesChan" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="https://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:YvesChan.github.com">
+	</form>
+</nav>
 
 </header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:YvesChan.github.com" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
-
-</nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/shadowsocks-analysis/">Shadowsocks 源码解释</a></h1>
-    
-    
-      <p class="meta">
-        
+	
+		
+	
+	<div id="content" class="inner">
 
 
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-18T09:10:00+08:00" pubdate data-updated="true">May 18<span>th</span>, 2013</time>
-        
-         | <a href="/blog/shadowsocks-analysis/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><blockquote><p>对于科学上网这种事，我向来一丝不苟。</p>
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/shadowsocks-analysis/">
+		
+			Shadowsocks 源码解释</a>
+	</h2>
+	<div class="entry-content">
+		<blockquote><p>对于科学上网这种事，我向来一丝不苟。</p>
 
 <p>但本po的主题并不是如何科学上网，而是深入了解proxy背后的原理。</p></blockquote>
 
@@ -119,251 +100,48 @@
 
 <p>一周前开始学习python，主要是想用python写一个爬虫。大概用了4天的课余时间把 《Dive Into Python3》过了一遍，了解基本语法。结合文档看大牛的源码是很好的学习方式，所谓learn by doing嘛。不得不说，shadowsocks的源码真心简洁，再看一下SOCK5协议的报文格式，并没有花很多时间。貌似说了不少废话，现在入正题= =！</p>
 
-<h2>Socks5</h2>
 
-<p>首先介绍一下socks5协议：
-SOCKS协议位于传输层(TCP/UDP等)与应用层之间，其工作流程为</p>
-
-<ol>
-<li>client向proxy发出请求信息，用以协商传输方式</li>
-<li>proxy作出应答</li>
-<li>client接到应答后向proxy发送目的主机（destination server)的ip和port</li>
-<li>proxy评估该目的主机地址，返回自身IP和port，此时C/P连接建立。</li>
-<li>proxy与dst server连接</li>
-<li>proxy将client发出的信息传到server，将server返回的信息转发到client。代理完成</li>
-</ol>
+		
+		<a href="/blog/shadowsocks-analysis/" class="more-link">Read on &rarr;</a>
+	</div>
 
 
-<h3>client连接proxy的第一个报文信息，进行认证机制协商</h3>
-
-<table border="1">
-    <tr>
-        <td>version</td>
-        <td>nmethod</td>
-        <td>methods</td>
-    </tr>
-    <tr>
-        <td>1 Bytes</td>
-        <td>1 Bytes</td>
-        <td>1 to 255 Bytes</td>
-    </tr>
-</table>
+<div class="meta">
+	<div class="date">
 
 
-<p>一般是 hex: 05 01 00
-即：版本5，1种认证方式，NO AUTHENTICATION REQUIRED(无需认证 0x00)</p>
-
-<h3>proxy从METHODS字段中选中一个字节(一种认证机制)，并向Client发送响应报文:</h3>
-
-<table border="1">
-    <tr>
-        <td>version</td>
-        <td>methods</td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>1</td>
-    </tr>
-</table>
 
 
-<p>一般是 hex: 05 00
-即：版本5，无需认证</p>
-
-<h3>认证机制相关的子协商完成后，Client提交转发请求:</h3>
-
-<table border="1">
-    <tr>
-        <td>VER</td>
-        <td>CMD</td>
-        <td>RSV</td>
-        <td>ATYP</td>
-        <td>DST.ADDR</td>
-        <td>DST.PORT</td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>1</td>
-        <td>0x00</td>
-        <td>1</td>
-        <td>variable</td>
-        <td>2</td>
-    </tr>
-</table>
 
 
-<p>前3个一般是 hex: 05 01 00
-地址类型可以是
-* 0x01    IPv4地址
-* 0x03    FQDN(全称域名)
-* 0x04    IPv6地址</p>
-
-<p>对应不同的地址类型，地址信息格式也不同：
-* IPv4地址，这里是big-endian序的4字节数据
-* FQDN，比如&#8221;www.nsfocus.net&#8221;，这里将是:0F 77 77 77 2E 6E 73 66 6F 63 75 73 2E 6E 65 74。注意，第一字节是长度域
-* IPv6地址，这里是16字节数据。</p>
-
-<h3>proxy评估来自Client的转发请求并发送响应报文</h3>
-
-<table border="1">
-    <tr>
-        <td>VER</td>
-        <td>REP</td>
-        <td>RSV</td>
-        <td>ATYP</td>
-        <td>BND.ADDR</td>
-        <td>BND.PORT</td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>1(response)</td>
-        <td>0x00</td>
-        <td>1</td>
-        <td>variable</td>
-        <td>2</td>
-    </tr>
-</table>
 
 
-<p>Proxy可以靠DST.ADDR、DST.PORT、SOCKSCLIENT.ADDR、SOCKSCLIENT.PORT进行评估，以决定建立到转发目的地的TCP连接还是拒绝转发。若允许则响应包的REP为0，非0则表示失败（拒绝转发或未能成功建立到转发目的地的TCP连接）。</p>
-
-<h2>shadowsocks source code</h2>
-
-<p>源代码方面，主要是由socks5转发模块和加密解密模块组成</p>
-
-<p>转发模块感觉比较简单，但是个人觉得有几点需要注意的地方，或者说我自己不太明白。（python菜，请谅解）</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;config.json&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-</span><span class='line'>    <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-</span><span class='line'><span class="n">SERVER</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;server&#39;</span><span class="p">]</span>
-</span><span class='line'><span class="n">REMOTE_PORT</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;server_port&#39;</span><span class="p">]</span>
-</span><span class='line'><span class="n">PORT</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;local_port&#39;</span><span class="p">]</span>
-</span><span class='line'><span class="n">KEY</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
+  
 
 
-<h3>client</h3>
-
-<ul>
-<li>从main开始，读取配置。这里为什么要用二进制的方式打开json文件呢？</li>
-<li>解释命令行参数 <code>optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:l:')</code>，这个跟Linux的getopt函数差不多，可以自己man一下。</li>
-<li>设置logging等级和信息，生成密文表（包括加密解密）。</li>
-<li>运行 ThreadingTCPServer 实例。从定义看， <code> class ThreadingTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer) </code> 子类化ThreadingTCPServer（多重继承继承ThreadingMixIn类和TCPServer类），即使用多线程处理TCP请求（Mix-in class to handle each request in a new thread），同时设置其类属性allow_reuse_address。这里绑定的地址是(&#8221;,PORT)，意思是该套接字对于本机的任何地址都是可达的。BaseRequestHandler 则由 Socks5Server 子类实现。由于 SocketServer module 包含了很多socket programming的细节，所以代码看起来相当简洁。</li>
-<li>每当有请求到达，调用 handle 函数，主要是建立proxy到client和server的连接，然后调用 handle_tcp 函数来转发TCP数据包(包括client to server或相反方向)，对于server来说，proxy是完全透明的。当然，这里client和proxy之间的数据交互需要通过加密传输。</li>
-<li>对于handle_tcp而言，它需要同时处理两个socket（client &amp; server），这里使用了I/O multiplexing的方式，选择select作为实现。</li>
-</ul>
+<time datetime="2013-05-18T09:10:00+08:00" pubdate data-updated="true">May 18<span>th</span>, 2013</time></div>
+	<div class="tags">
 
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">handle_tcp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">remote</span><span class="p">):</span>
-</span><span class='line'>    <span class="k">try</span><span class="p">:</span>
-</span><span class='line'>        <span class="n">fdset</span> <span class="o">=</span> <span class="p">[</span><span class="n">sock</span><span class="p">,</span> <span class="n">remote</span><span class="p">]</span>
-</span><span class='line'>        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-</span><span class='line'>            <span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">fdset</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[])</span>
-</span><span class='line'>            <span class="k">if</span> <span class="n">sock</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
-</span><span class='line'>                <span class="n">data</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
-</span><span class='line'>                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-</span><span class='line'>                    <span class="k">break</span>
-</span><span class='line'>                <span class="n">result</span> <span class="o">=</span> <span class="n">send_all</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-</span><span class='line'>                <span class="k">if</span> <span class="n">result</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-</span><span class='line'>                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;failed to send all data&#39;</span><span class="p">)</span>
-</span><span class='line'>            <span class="k">if</span> <span class="n">remote</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
-</span><span class='line'>                <span class="n">data</span> <span class="o">=</span> <span class="n">remote</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
-</span><span class='line'>                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-</span><span class='line'>                    <span class="k">break</span>
-</span><span class='line'>                <span class="n">result</span> <span class="o">=</span> <span class="n">send_all</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-</span><span class='line'>                <span class="k">if</span> <span class="n">result</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-</span><span class='line'>                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;failed to send all data&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">finally</span><span class="p">:</span>
-</span><span class='line'>        <span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span><span class='line'>        <span class="n">remote</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
+	<a class='category' href='/blog/categories/gfw/'>GFW</a>, <a class='category' href='/blog/categories/python/'>python</a>, <a class='category' href='/blog/categories/socks5/'>socks5</a>
 
 
-<p>对于高性能并发服务器而言，这是一种非常重要的手段。当然还是其他实现方式，例如poll,epoll,kqueue等。这里由于文件描述符数量较小，所以分别也不大了。更详细的信息可以看 <a href="http://www.kegel.com/c10k.html">C10K problem</a></p>
-
-<h3>server</h3>
-
-<p>服务端代码与客户端差不多，主要是数据报文的解释和转发问题。主要是处理好在client端发送过来的自定数据格式，转发到目的地址server，再将返回的数据转发给client。</p>
-
-<p>更多的细节我都在<a href="https://github.com/YvesChan/shadowsocks">源码</a>上注释了，有兴趣可以看看。</p>
-
-<p>整个架构图大概这样：（就不要吐槽画的有多丑了= =）</p>
-
-<p><img src="http://ww3.sinaimg.cn/mw690/693e3eb0gw1e4uzpuiyh9j20ff0dvaat.jpg" alt="arch" /></p>
-
-<hr />
-
-<p>Reference:</p>
-
-<p><a href="http://blog.csdn.net/liufan1945/article/details/8053804">Socks5详解（RFC）</a></p>
 </div>
-  
-  
+	
+		<div class="comments"><a href="/blog/shadowsocks-analysis//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/first-blood/">First Blood</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-19T21:54:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2013</time>
-        
-         | <a href="/blog/first-blood/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><blockquote><p>First Blood</p>
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/first-blood/">
+		
+			First Blood</a>
+	</h2>
+	<div class="entry-content">
+		<blockquote><p>First Blood</p>
 
 <p>出自ACM/ICPC
 形容某道题第一个AC的team称为拿到了该题的 <em>First Blood</em></p></blockquote>
@@ -377,52 +155,58 @@ SOCKS协议位于传输层(TCP/UDP等)与应用层之间，其工作流程为</p
 <p>网上关于octopress的教程一陀陀的，我就不重复了。然后比较蛋疼的ST2的中文输入问题一直没有解决，然后vim输入中文感觉灰常怪，所以就gedit先凑合着。突然想起一个比较蛋疼的问题：如果在别的机器上要写blog，那岂不是也要有Ruby的环境？看来要尽快考虑将静态网页生成的工作交由服务器负责了。果然什么都是有利有弊啊，更多优缺点有待发现ing&#8230;.</p>
 
 <p>其实呢，折腾虽说是由个人喜好决定，但是也不要太过了，码农还是以敲代码为主嘛，只停留在一些应用层面上的东西没什么太大的意思，这也是我不愿意折腾UI的原因&#8230;</p>
+
+<p>PS: 原先的Blog在<a href="http://shanks-chan.blogspot.com">Blogspot</a>由于贴代码太不方便了，而且被墙，应该不会再更新&#8230;.</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-19T21:54:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/gan-wu-za-tan/'>感悟杂谈</a>
+
+
 </div>
-  
-  
+	
+		<div class="comments"><a href="/blog/first-blood//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
-
-    </article>
-  
-  <div class="pagination">
+<nav id="pagenavi">
     
-    <a href="/blog/archives">Blog Archives</a>
     
-  </div>
-</div>
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/shadowsocks-analysis/">Shadowsocks 源码解释</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/first-blood/">First Blood</a>
-      </li>
-    
-  </ul>
-</section>
+    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
+</nav></div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
 
-
-
-
-
-  
-</aside>
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - YvesChan -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
+    YvesChan
 
 </footer>
-  
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
 
 <script type="text/javascript">
       var disqus_shortname = 'helloyc';
@@ -439,38 +223,17 @@ SOCKS协议位于传输层(TCP/UDP等)与应用层之间，其工作流程为</p
 
 
 
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-39495391-1']);
+		_gaq.push(['_trackPageview']);
 
-
-
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
 
 
 
