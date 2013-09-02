@@ -1,0 +1,261 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Software Defined Networking - Note 2 - Hello YC</title>
+	<meta name="author" content="YvesChan">
+
+	
+	<meta name="description" content="Week 3 Learning Objectives: Discover what network virtualization is and why it is used
+Identify various ways of implementing virtual networks
+Explain &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Hello YC" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Hello YC</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+    <li><a href="/blog/archives">Archives</a></li>
+    <li><a href="/about.html">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+    <li><a href="/blog/archives">Archives</a></li>
+    <li><a href="/about.html">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:YvesChan.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		<a class="google" href="https://plus.google.com/102815467033208490607?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/shankscyp" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/YvesChan" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="https://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:YvesChan.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Software Defined Networking - Note 2</h2>
+	<div class="entry-content"><h1>Week 3</h1>
+
+<h2>Learning Objectives:</h2>
+
+<ul>
+<li>Discover what network virtualization is and why it is used</li>
+<li>Identify various ways of implementing virtual networks</li>
+<li>Explain why Mininet is useful</li>
+<li>Practice how Mininet works</li>
+<li>Gain more experience using Mininet, setting up topologies, etc.</li>
+</ul>
+
+
+<h2>Network virtualization</h2>
+
+<h3>definition: Abstraction of the physical network(物理网络的抽象)</h3>
+
+<ul>
+<li>support multiple logical networks share a physical substrate(多个逻辑网络共享物理基础设施)</li>
+<li>container of network services</li>
+</ul>
+
+
+<h3>Aspects of network virtualization(网络虚拟化的应用层面)</h3>
+
+<ul>
+<li>Nodes: VM</li>
+<li>Links: Tunnels</li>
+<li>Storage</li>
+</ul>
+
+
+<h3>Motivation &amp; Goal</h3>
+
+<ul>
+<li>Flexibility</li>
+<li>Manageability</li>
+<li>Scalability</li>
+<li>Security &amp; Isolation</li>
+<li>Programmability</li>
+<li>Heterogeneity(异质性): 支持不同技术</li>
+</ul>
+
+
+<h3>Virtual switch(虚拟交换技术)</h3>
+
+<p>Mechanism that taking Ethernet frames inside a VM and passing them to the physical interface, which networking VM together over L2 topology.(通过虚拟交换技术将虚拟机连接到二层网络)</p>
+
+<p>Example:
+* short-bridge in VINI: extension of Linux bridging(桥接)
+* Open vSwitch: can be configured remotely with OpenFlow, json</p>
+
+<h2>Application of virtual networking</h2>
+
+<ul>
+<li>Experimental deployments</li>
+<li>Isolation on shared infrastructure</li>
+<li>Reuse of resource pool</li>
+<li>Dynamic scaling</li>
+<li>Easier management of logical resources</li>
+</ul>
+
+
+<h2>Virtual network in Mininet</h2>
+
+<h3>Mininet</h3>
+
+<p>difiniton: a <code>virtual network environment</code> that can run on a single PC</p>
+
+<p><em>Mininet</em> VM architecture paradigm(review it in ppt/pdf):</p>
+
+<ol>
+<li>lanuch mininet process(mn)</li>
+<li>create subprocesses(/bin/bash) &amp; network namespace in per vhost</li>
+<li>create virtual ethernet(veth) pairs and assign to namespace(establish tunnel between virtual interface(VHost) and real interface(local).)</li>
+<li>create OpenFlow switch to connect vhosts</li>
+<li>create OpenFlow controller to control flow table entries in switch through OpenFlow protocol</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-01T21:49:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/openflow/'>OpenFlow</a>, <a class='category' href='/blog/categories/sdn/'>SDN</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/software-defined-networking-note-2/#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    YvesChan
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'helloyc';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://YvesChan.github.com/blog/software-defined-networking-note-2/';
+        var disqus_url = 'http://YvesChan.github.com/blog/software-defined-networking-note-2/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-39495391-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>

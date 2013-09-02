@@ -1,0 +1,337 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Software-Defined Networking - Note 3 - Hello YC</title>
+	<meta name="author" content="YvesChan">
+
+	
+	<meta name="description" content="Week 4 - SDN Nuts and Bolts(螺母和螺栓) - Control Plane =================== Learing objectives: Review how an SDN controller can populate(填充) a switch&# &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Hello YC" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Hello YC</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+    <li><a href="/blog/archives">Archives</a></li>
+    <li><a href="/about.html">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+    <li><a href="/blog/archives">Archives</a></li>
+    <li><a href="/about.html">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:YvesChan.github.com">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		<a class="google" href="https://plus.google.com/102815467033208490607?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/shankscyp" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/YvesChan" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+	<form class="search" action="https://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:YvesChan.github.com">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Software-Defined Networking - Note 3</h2>
+	<div class="entry-content"><h1>Week 4 - SDN Nuts and Bolts(螺母和螺栓) - Control Plane</h1>
+
+<p>===================</p>
+
+<h2>Learing objectives:</h2>
+
+<ul>
+<li>Review how an SDN controller can populate(填充) a switch&#8217;s forwarding table.</li>
+<li>Determine how an SDN controller can be used to control multiple switches in a single network, and why to do so.</li>
+<li>Gain experience setting up a controller and basic switch environment.</li>
+<li>Understand the design tradeoffs between some of the more commonly used SDN/OpenFlow controllers. (一些广泛使用的控制器之间的设计抉择)</li>
+<li>Set up controller in Mininet that can perform basic operations,like switch-table population and firewalling.</li>
+</ul>
+
+
+<h2>Control plane basics</h2>
+
+<h3>Openflow protocol specification(协议规范) (pic in PPT - P6)</h3>
+
+<ul>
+<li><p><code>OpenFlow controller</code> communicates with <code>switch</code> over Secure channel</p>
+
+<ul>
+<li>OF protocol defines msg format</li>
+<li>controller use control channel to update flow table</li>
+<li>logic is executed at controller</li>
+</ul>
+</li>
+<li><p><code>Switch components</code> including:</p>
+
+<ul>
+<li>flow tables: perform packet lookup, if matching then take <code>action</code>
+
+<ul>
+<li>actions: forward, drop, modify, enqueue</li>
+<li>flow table format:</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<pre>
+ switch| MAC      |Eth |VLAN|IP               |TCP/UDP
+ port  |[src][dst]|type|ID  |[src][dst][proto]|[sport][dport]|action
+</pre>
+
+
+<ul>
+<li>secure channel</li>
+</ul>
+
+
+<p>控制器与OF交换机之间通过SSL连接，使用OF协议进行通信，并在交换机上设置和更新流表。交换机只负责根据流表处理数据包，因此所有的逻辑都在控制器。每个数据包协议头部与所有流表(flow table)一一对比，如果匹配则执行相应的操作，如果所有都不匹配则发送到控制器(controller)。</p>
+
+<ul>
+<li><code>dpctl</code> Control channel
+
+<ul>
+<li>switches default port: 6634</li>
+<li>inspect, modify flow table</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Even in the absence of a controller, we can use dpctl to talk to the switch.</p>
+
+<!-- more -->
+
+
+<h3>Openflow enhancements(v1.3)</h3>
+
+<ul>
+<li>action set: 对每个包执行多个操作</li>
+<li>group: a list of action sets. 一个pipeline中包含多个table，每个match的table可以把更新数据包特定域(filed)的操作(action)添加到action set中，在到达出口(output port)前执行所有action set中的action.见P10</li>
+</ul>
+
+
+<h2>SDN controller</h2>
+
+<h2>Using SDN controllers to customize control</h2>
+
+<h3>Hub and learning switch</h3>
+
+<ul>
+<li>Hub
+
+<ul>
+<li>no forwarding info stored at switch</li>
+<li>every input packet is flooded out all ports</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Start a <code>POX controller</code> by running hub.py. When the POX controller receive a connection request, it send back the msg with modifying flow table entries(flood).</p>
+
+<ul>
+<li><p>learning switch(algorithm)</p></li>
+<li><p>Important concept: Listener</p></li>
+</ul>
+
+
+<h3>Simple firewall(Important)</h3>
+
+<ul>
+<li>performance: cache decisions at switch(把控制器的操作缓存在交换机以提高网络性能)
+
+<ul>
+<li>important to limit data traffic to controller</li>
+<li>when controller decides to forward or drop, the flow table is modified.</li>
+<li>decision is cache at switch until the flow table entry expired</li>
+</ul>
+</li>
+</ul>
+
+
+<p>当主机A要ping主机B时，第一个数据包的延时会比较大，因为交换机此时还没有flow table，需要把packet转发到controller，等controller根据rules作出转发决定，同时缓存该决定。每一段时间都会有一个icmp包的延时比较大，是因为flow table entry过期，要重复上述操作。</p>
+
+<hr />
+
+<h2>Experiment</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nv">$ </span>sudo dhclient eth1
+</span><span class='line'><span class="nv">$ </span>sudo mn --topo single,3 --max --switch ovsk --controller remote     <span class="c"># create a simple topologic with 3 hosts &amp; 1 OpenvSwitch</span>
+</span><span class='line'><span class="nv">$ </span>pox/pox.py log.level --DEBUG forwarding.hub     <span class="c"># start a pox&#39;s hub component</span>
+</span><span class='line'><span class="nv">$ </span>dpctl dump-flows tcp:127.0.0.1:6634    <span class="c"># check the flow table in switch</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>POX工作方式很简单，pox.py文件启动POX，并且后面接上需要载入的模块名字，可以一次接入多个模块，POX会执行模块中的launch()函数并将模块的状态设置为“up”，并且在模块后面可以给模块指定参数的。</p>
+
+<h3>useful API</h3>
+
+<ul>
+<li><p>connection.send()</p></li>
+<li><p>ofp_action_output(port = ..): a flow table action class.  It specifies a switch port that you wish to send the packet out of.</p></li>
+<li><p>ofp_match class</p></li>
+<li><p>ofp_packet_out()</p></li>
+<li><p>ofp_flow_mod(): OpenFlow modification msg. This instructs a switch to install a flow table entry.</p></li>
+</ul>
+
+
+<h3>firewall behavior</h3>
+
+<ul>
+<li>Hash table for storing K/V pairs (switch, src MAC)</li>
+<li>drop: if there is a firewall entry maps to &#8220;False&#8221; or no match entry</li>
+<li>forward: match a firewall entry that maps to &#8220;True&#8221;</li>
+</ul>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-02T22:41:00+08:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/openflow/'>OpenFlow</a>, <a class='category' href='/blog/categories/sdn/'>SDN</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/software-defined-networking-note-3/#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+	
+	
+	
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2013
+
+    YvesChan
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'helloyc';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://YvesChan.github.com/blog/software-defined-networking-note-3/';
+        var disqus_url = 'http://YvesChan.github.com/blog/software-defined-networking-note-3/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-39495391-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>

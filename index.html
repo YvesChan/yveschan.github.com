@@ -7,7 +7,7 @@
 	<meta name="author" content="YvesChan">
 
 	
-	<meta name="description" content="SDN (Software-Defined Networking) is an approach to computer networking which abstracts the distributed systems, the control plane and the data &hellip;">
+	<meta name="description" content="Week 4 - SDN Nuts and Bolts(螺母和螺栓) - Control Plane =================== Learing objectives: Review how an SDN controller can populate(填充) a switch&# &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -80,6 +80,236 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/software-defined-networking-note-3/">
+		
+			Software-Defined Networking - Note 3</a>
+	</h2>
+	<div class="entry-content">
+		<h1>Week 4 - SDN Nuts and Bolts(螺母和螺栓) - Control Plane</h1>
+
+<p>===================</p>
+
+<h2>Learing objectives:</h2>
+
+<ul>
+<li>Review how an SDN controller can populate(填充) a switch&#8217;s forwarding table.</li>
+<li>Determine how an SDN controller can be used to control multiple switches in a single network, and why to do so.</li>
+<li>Gain experience setting up a controller and basic switch environment.</li>
+<li>Understand the design tradeoffs between some of the more commonly used SDN/OpenFlow controllers. (一些广泛使用的控制器之间的设计抉择)</li>
+<li>Set up controller in Mininet that can perform basic operations,like switch-table population and firewalling.</li>
+</ul>
+
+
+<h2>Control plane basics</h2>
+
+<h3>Openflow protocol specification(协议规范) (pic in PPT - P6)</h3>
+
+<ul>
+<li><p><code>OpenFlow controller</code> communicates with <code>switch</code> over Secure channel</p>
+
+<ul>
+<li>OF protocol defines msg format</li>
+<li>controller use control channel to update flow table</li>
+<li>logic is executed at controller</li>
+</ul>
+</li>
+<li><p><code>Switch components</code> including:</p>
+
+<ul>
+<li>flow tables: perform packet lookup, if matching then take <code>action</code>
+
+<ul>
+<li>actions: forward, drop, modify, enqueue</li>
+<li>flow table format:</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<pre>
+ switch| MAC      |Eth |VLAN|IP               |TCP/UDP
+ port  |[src][dst]|type|ID  |[src][dst][proto]|[sport][dport]|action
+</pre>
+
+
+<ul>
+<li>secure channel</li>
+</ul>
+
+
+<p>控制器与OF交换机之间通过SSL连接，使用OF协议进行通信，并在交换机上设置和更新流表。交换机只负责根据流表处理数据包，因此所有的逻辑都在控制器。每个数据包协议头部与所有流表(flow table)一一对比，如果匹配则执行相应的操作，如果所有都不匹配则发送到控制器(controller)。</p>
+
+<ul>
+<li><code>dpctl</code> Control channel
+
+<ul>
+<li>switches default port: 6634</li>
+<li>inspect, modify flow table</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Even in the absence of a controller, we can use dpctl to talk to the switch.</p>
+
+
+		
+		<a href="/blog/software-defined-networking-note-3/" class="more-link">Read on &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-02T22:41:00+08:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/openflow/'>OpenFlow</a>, <a class='category' href='/blog/categories/sdn/'>SDN</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/software-defined-networking-note-3//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/software-defined-networking-note-2/">
+		
+			Software Defined Networking - Note 2</a>
+	</h2>
+	<div class="entry-content">
+		<h1>Week 3</h1>
+
+<h2>Learning Objectives:</h2>
+
+<ul>
+<li>Discover what network virtualization is and why it is used</li>
+<li>Identify various ways of implementing virtual networks</li>
+<li>Explain why Mininet is useful</li>
+<li>Practice how Mininet works</li>
+<li>Gain more experience using Mininet, setting up topologies, etc.</li>
+</ul>
+
+
+<h2>Network virtualization</h2>
+
+<h3>definition: Abstraction of the physical network(物理网络的抽象)</h3>
+
+<ul>
+<li>support multiple logical networks share a physical substrate(多个逻辑网络共享物理基础设施)</li>
+<li>container of network services</li>
+</ul>
+
+
+<h3>Aspects of network virtualization(网络虚拟化的应用层面)</h3>
+
+<ul>
+<li>Nodes: VM</li>
+<li>Links: Tunnels</li>
+<li>Storage</li>
+</ul>
+
+
+<h3>Motivation &amp; Goal</h3>
+
+<ul>
+<li>Flexibility</li>
+<li>Manageability</li>
+<li>Scalability</li>
+<li>Security &amp; Isolation</li>
+<li>Programmability</li>
+<li>Heterogeneity(异质性): 支持不同技术</li>
+</ul>
+
+
+<h3>Virtual switch(虚拟交换技术)</h3>
+
+<p>Mechanism that taking Ethernet frames inside a VM and passing them to the physical interface, which networking VM together over L2 topology.(通过虚拟交换技术将虚拟机连接到二层网络)</p>
+
+<p>Example:
+* short-bridge in VINI: extension of Linux bridging(桥接)
+* Open vSwitch: can be configured remotely with OpenFlow, json</p>
+
+<h2>Application of virtual networking</h2>
+
+<ul>
+<li>Experimental deployments</li>
+<li>Isolation on shared infrastructure</li>
+<li>Reuse of resource pool</li>
+<li>Dynamic scaling</li>
+<li>Easier management of logical resources</li>
+</ul>
+
+
+<h2>Virtual network in Mininet</h2>
+
+<h3>Mininet</h3>
+
+<p>difiniton: a <code>virtual network environment</code> that can run on a single PC</p>
+
+<p><em>Mininet</em> VM architecture paradigm(review it in ppt/pdf):</p>
+
+<ol>
+<li>lanuch mininet process(mn)</li>
+<li>create subprocesses(/bin/bash) &amp; network namespace in per vhost</li>
+<li>create virtual ethernet(veth) pairs and assign to namespace(establish tunnel between virtual interface(VHost) and real interface(local).)</li>
+<li>create OpenFlow switch to connect vhosts</li>
+<li>create OpenFlow controller to control flow table entries in switch through OpenFlow protocol</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-01T21:49:00+08:00" pubdate data-updated="true">Sep 1<span>st</span>, 2013</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/openflow/'>OpenFlow</a>, <a class='category' href='/blog/categories/sdn/'>SDN</a>
+
+
+</div>
+	
+		<div class="comments"><a href="/blog/software-defined-networking-note-2//index.html#disqus_thread">Comments</a></div>
+	
+</div></article>
 
 
     <article class="post">
