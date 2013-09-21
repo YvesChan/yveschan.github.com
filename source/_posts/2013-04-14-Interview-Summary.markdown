@@ -4,7 +4,7 @@ title: "大三下面试黑历史"
 date: 2013-04-14 00:08
 comments: true
 categories: [感悟杂谈]
-published: False
+published: false
 ---
 
 ## preface

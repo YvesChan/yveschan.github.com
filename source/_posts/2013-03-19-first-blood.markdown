@@ -3,7 +3,7 @@ layout: post
 title: "First Blood"
 date: 2013-03-19 21:54
 comments: true
-categories: 
+categories: [感悟杂谈]
 ---
 
 > First Blood
@@ -20,3 +20,5 @@ categories:
 网上关于octopress的教程一陀陀的，我就不重复了。然后比较蛋疼的ST2的中文输入问题一直没有解决，然后vim输入中文感觉灰常怪，所以就gedit先凑合着。突然想起一个比较蛋疼的问题：如果在别的机器上要写blog，那岂不是也要有Ruby的环境？看来要尽快考虑将静态网页生成的工作交由服务器负责了。果然什么都是有利有弊啊，更多优缺点有待发现ing....
 
 其实呢，折腾虽说是由个人喜好决定，但是也不要太过了，码农还是以敲代码为主嘛，只停留在一些应用层面上的东西没什么太大的意思，这也是我不愿意折腾UI的原因...
+
+PS: 原先的Blog在[Blogspot](http://shanks-chan.blogspot.com)由于贴代码太不方便了，而且被墙，应该不会再更新....

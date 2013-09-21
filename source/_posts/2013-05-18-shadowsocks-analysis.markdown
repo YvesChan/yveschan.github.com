@@ -16,6 +16,8 @@ categories: [socks5, python, GFW]
 
 一周前开始学习python，主要是想用python写一个爬虫。大概用了4天的课余时间把 《Dive Into Python3》过了一遍，了解基本语法。结合文档看大牛的源码是很好的学习方式，所谓learn by doing嘛。不得不说，shadowsocks的源码真心简洁，再看一下SOCK5协议的报文格式，并没有花很多时间。貌似说了不少废话，现在入正题= =！
 
+<!--more-->
+
 ## Socks5
 首先介绍一下socks5协议：
 SOCKS协议位于传输层(TCP/UDP等)与应用层之间，其工作流程为
